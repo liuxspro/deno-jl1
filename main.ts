@@ -50,6 +50,7 @@ router.get("/", (ctx) => {
 router.get("/wmts/jl1earth", (ctx) => {
   const domain = "jl1.deno.dev";
   const template = `https://${domain}/jl1earth/{TileMatrix}/{TileCol}/{TileRow}`;
+  ctx.response.type = "text/xml;charset=UTF-8";
   ctx.response.body = create_Capabilities(template);
 });
 
