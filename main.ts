@@ -3,6 +3,18 @@ import { Router } from "jsr:@oak/oak/router";
 import * as wasm from "./pkg/webp_to_png.js";
 import { create_Capabilities } from "./wmts.ts";
 
+function convert(data: Uint8Array) {
+  const webpHeader = new Uint8Array([0x57, 0x45, 0x42, 0x50]); // "WEBP"
+  // Check the next 4 bytes for "WEBP"
+  for (let i = 0; i < 4; i++) {
+    if (data[8 + i] !== webpHeader[i]) {
+      return data;
+    } else {
+      return wasm.webp_to_png(data);
+    }
+  }
+}
+
 async function get_tile(
   z: string,
   x: string,
@@ -14,7 +26,7 @@ async function get_tile(
   const tile_url = `https://api.jl1mall.com/getMap/${z}/${x}/${y}?mk=${mk}&tk=${tk}&sch=wmts`;
   const tile_data = await (await fetch(tile_url)).bytes();
   // webp to png
-  const pngBuffer = wasm.webp_to_png(tile_data);
+  const pngBuffer = convert(tile_data);
   return pngBuffer;
 }
 
@@ -22,7 +34,7 @@ async function get_tile_earth(z: string, x: string, y: string) {
   const token = "Bearer%20a84a40c81f784490a4c5689187054abf";
   const tile_url = `https://tile.charmingglobe.com/tile/china2023_5_shield/wmts/${z}/${x}/${y}?v=v1&token=${token}`;
   const tile_data = await (await fetch(tile_url)).bytes();
-  const pngBuffer = wasm.webp_to_png(tile_data);
+  const pngBuffer = convert(tile_data);
   return pngBuffer;
 }
 
