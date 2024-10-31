@@ -20,8 +20,8 @@ function create_Capabilities(template: string): string {
                 <ows:Title>2023年度全国高质量一张图</ows:Title>
                 <ows:Abstract>2023年度全国高质量一张图</ows:Abstract>
                 <ows:WGS84BoundingBox>
-                    <ows:LowerCorner>-180.0 -90</ows:LowerCorner>
-                    <ows:UpperCorner>180.0 90</ows:UpperCorner>
+                    <ows:LowerCorner>-180.0 -85.051129</ows:LowerCorner>
+                    <ows:UpperCorner>180.0 85.051129</ows:UpperCorner>
                 </ows:WGS84BoundingBox>
                 <ows:Identifier>jl1_2023</ows:Identifier>
                 <Style>

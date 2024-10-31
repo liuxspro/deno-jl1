@@ -15,13 +15,7 @@ function convert(data: Uint8Array) {
   }
 }
 
-async function get_tile(
-  z: string,
-  x: string,
-  y: string,
-  mk: string,
-  tk: string
-) {
+async function get_tile(z: string, x: string, y: string, mk: string, tk: string) {
   // 通过添加sch=wmts可返回正常XYZ顺序, 否则使用Math.pow(2, z) - 1 - y计算-y值
   const tile_url = `https://api.jl1mall.com/getMap/${z}/${x}/${y}?mk=${mk}&tk=${tk}&sch=wmts`;
   const tile_data = await (await fetch(tile_url)).bytes();
@@ -31,7 +25,7 @@ async function get_tile(
 }
 
 async function get_tile_earth(z: string, x: string, y: string) {
-  const token = "Bearer%20a84a40c81f784490a4c5689187054abf";
+  const token = "Bearer fdsa0c81f784490a4c5dfghdfgh";
   const tile_url = `https://tile.charmingglobe.com/tile/china2023_5_shield/wmts/${z}/${x}/${y}?v=v1&token=${token}`;
   const tile_data = await (await fetch(tile_url)).bytes();
   const pngBuffer = convert(tile_data);
