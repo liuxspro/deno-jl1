@@ -2,6 +2,7 @@ import { Application } from "jsr:@oak/oak/application";
 import { Router } from "jsr:@oak/oak/router";
 import * as wasm from "./pkg/webp_to_png.js";
 import { create_Capabilities } from "./wmts.ts";
+import process from "node:process";
 
 function convert(data: Uint8Array) {
   const webpHeader = new Uint8Array([0x57, 0x45, 0x42, 0x50]); // "WEBP"
@@ -15,7 +16,13 @@ function convert(data: Uint8Array) {
   }
 }
 
-async function get_tile(z: string, x: string, y: string, mk: string, tk: string) {
+async function get_tile(
+  z: string,
+  x: string,
+  y: string,
+  mk: string,
+  tk: string
+) {
   // 通过添加sch=wmts可返回正常XYZ顺序, 否则使用Math.pow(2, z) - 1 - y计算-y值
   const tile_url = `https://api.jl1mall.com/getMap/${z}/${x}/${y}?mk=${mk}&tk=${tk}&sch=wmts`;
   const tile_data = await (await fetch(tile_url)).bytes();
@@ -25,7 +32,7 @@ async function get_tile(z: string, x: string, y: string, mk: string, tk: string)
 }
 
 async function get_tile_earth(z: string, x: string, y: string) {
-  const token = "Bearer fdsa0c81f784490a4c5dfghdfgh";
+  const token = process.env.EARTH_TOKEN || "Bearer fdsa0c81f784490a4c5dfghdfgh";
   const tile_url = `https://tile.charmingglobe.com/tile/china2023_5_shield/wmts/${z}/${x}/${y}?v=v1&token=${token}`;
   const tile_data = await (await fetch(tile_url)).bytes();
   const pngBuffer = convert(tile_data);
@@ -85,4 +92,5 @@ app.use(router.routes());
 app.use(router.allowedMethods());
 
 console.log("Server is runing...");
+console.log(`ENV Token is ${process.env.EARTH_TOKEN}`);
 app.listen({ port: 80 });
