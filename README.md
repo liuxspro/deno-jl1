@@ -11,3 +11,9 @@ deno task dev
 ```bash
 deployctl deploy
 ```
+
+## compile
+
+```bash
+deno compile -A main.ts
+```
