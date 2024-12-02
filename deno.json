@@ -4,7 +4,7 @@
   },
   "deploy": {
     "project": "ac3af5d9-c562-41e5-b572-4a7ab6c673fa",
-    "exclude": ["**/node_modules","**/.git"],
+    "exclude": ["**/node_modules", "**/.git"],
     "include": [],
     "entrypoint": "main.ts"
   }

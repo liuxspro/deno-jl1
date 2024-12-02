@@ -1,28 +1,22 @@
 import { Application } from "jsr:@oak/oak/application";
 import { Router } from "jsr:@oak/oak/router";
-import * as wasm from "./pkg/webp_to_png.js";
+import { webp_to_png } from "jsr:@liuxspro/webp-to-png";
 import { create_Capabilities } from "./wmts.ts";
 import process from "node:process";
 
-function convert(data: Uint8Array) {
+async function convert(data: Uint8Array) {
   const webpHeader = new Uint8Array([0x57, 0x45, 0x42, 0x50]); // "WEBP"
   // Check the next 4 bytes for "WEBP"
   for (let i = 0; i < 4; i++) {
     if (data[8 + i] !== webpHeader[i]) {
       return data;
     } else {
-      return wasm.webp_to_png(data);
+      return await webp_to_png(data);
     }
   }
 }
 
-async function get_tile(
-  z: string,
-  x: string,
-  y: string,
-  mk: string,
-  tk: string
-) {
+async function get_tile(z: string, x: string, y: string, mk: string, tk: string) {
   // 通过添加sch=wmts可返回正常XYZ顺序, 否则使用Math.pow(2, z) - 1 - y计算-y值
   const tile_url = `https://api.jl1mall.com/getMap/${z}/${x}/${y}?mk=${mk}&tk=${tk}&sch=wmts`;
   const tile_data = await (await fetch(tile_url)).bytes();
