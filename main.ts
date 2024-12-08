@@ -16,7 +16,13 @@ async function convert(data: Uint8Array) {
   }
 }
 
-async function get_tile(z: string, x: string, y: string, mk: string, tk: string) {
+async function get_tile(
+  z: string,
+  x: string,
+  y: string,
+  mk: string,
+  tk: string
+) {
   // 通过添加sch=wmts可返回正常XYZ顺序, 否则使用Math.pow(2, z) - 1 - y计算-y值
   const tile_url = `https://api.jl1mall.com/getMap/${z}/${x}/${y}?mk=${mk}&tk=${tk}&sch=wmts`;
   const tile_data = await (await fetch(tile_url)).bytes();
