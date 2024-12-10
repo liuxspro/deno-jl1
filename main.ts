@@ -1,19 +1,15 @@
 import { Application } from "jsr:@oak/oak/application";
 import { Router } from "jsr:@oak/oak/router";
 import { webp_to_png } from "jsr:@liuxspro/webp-to-png";
+import { is_webp } from "jsr:@liuxspro/utils";
 import { create_Capabilities } from "./wmts.ts";
 import process from "node:process";
 
 async function convert(data: Uint8Array) {
-  const webpHeader = new Uint8Array([0x57, 0x45, 0x42, 0x50]); // "WEBP"
-  // Check the next 4 bytes for "WEBP"
-  for (let i = 0; i < 4; i++) {
-    if (data[8 + i] !== webpHeader[i]) {
-      return data;
-    } else {
-      return await webp_to_png(data);
-    }
+  if (is_webp(data)) {
+    return await webp_to_png(data);
   }
+  return data;
 }
 
 async function get_tile(
