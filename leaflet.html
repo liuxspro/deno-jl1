@@ -25,9 +25,9 @@
     <p>previrew</p>
     <div id="map"></div>
     <script>
-      var map = L.map("map").setView([36.24427318, 107.31445312], 3);
+      var map = L.map("map").setView([36.24, 107.31], 2);
       L.tileLayer("https://jl1.deno.dev/jl1earth/{z}/{x}/{y}.png", {
-        maxZoom: 6,
+        maxZoom: 5,
       }).addTo(map);
     </script>
   </body>

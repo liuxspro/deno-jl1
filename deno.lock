@@ -1,7 +1,7 @@
 {
   "version": "4",
   "specifiers": {
-    "jsr:@liuxspro/utils@*": "0.1.6",
+    "jsr:@liuxspro/utils@*": "0.1.7",
     "jsr:@liuxspro/webp-to-png@*": "0.0.3",
     "jsr:@oak/commons@1": "1.0.0",
     "jsr:@oak/oak@*": "17.1.3",
@@ -18,8 +18,8 @@
     "npm:path-to-regexp@6.2.1": "6.2.1"
   },
   "jsr": {
-    "@liuxspro/utils@0.1.6": {
-      "integrity": "1981c6dada5d4ff674fb8ffab48a7975de6bb56ac7bca15a94527ff80f1bc3b5"
+    "@liuxspro/utils@0.1.7": {
+      "integrity": "a286ca7d3759ad533dae11e21cece58fa3e6ef2ae3df4dd91eac77f0c633003d"
     },
     "@liuxspro/webp-to-png@0.0.3": {
       "integrity": "becbeceffb74c325c2dd28748d35543b1c67c5e80721c83bfa48953db39b951c"

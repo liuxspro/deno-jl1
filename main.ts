@@ -1,8 +1,7 @@
 import { Application } from "jsr:@oak/oak/application";
 import { Router } from "jsr:@oak/oak/router";
 import { webp_to_png } from "jsr:@liuxspro/webp-to-png";
-import { is_webp } from "jsr:@liuxspro/utils";
-import { create_Capabilities } from "./wmts.ts";
+import { is_webp, XYZMap } from "jsr:@liuxspro/utils";
 import process from "node:process";
 
 async function convert(data: Uint8Array) {
@@ -63,9 +62,13 @@ router.get("/", (ctx) => {
 
 router.get("/wmts/jl1earth", (ctx) => {
   const domain = "jl1.deno.dev";
-  const template = `https://${domain}/jl1earth/{TileMatrix}/{TileCol}/{TileRow}`;
+  const url = `https://${domain}/jl1earth/{z}/{x}/{y}`;
+  const m = new XYZMap("2023年度全国高质量一张图", url);
   ctx.response.type = "text/xml;charset=UTF-8";
-  ctx.response.body = create_Capabilities(template);
+  ctx.response.body = m.as_wmts(
+    "吉林一号（共生地球版）代理",
+    "吉林一号（共生地球版）代理服务"
+  );
 });
 
 router.get("/wmts/jl1", (ctx) => {
@@ -78,9 +81,16 @@ router.get("/wmts/jl1", (ctx) => {
     return;
   }
   const domain = "jl1.deno.dev";
-  const template = `https://${domain}/jl1/{TileMatrix}/{TileCol}/{TileRow}?mk=${mk}&amp;tk=${tk}`;
+  const map_url = `https://${domain}/jl1/{z}/{x}/{y}?mk=${mk}&amp;tk=${tk}`;
+  const m = new XYZMap("2023年度全国高质量一张图", map_url);
   ctx.response.type = "text/xml;charset=UTF-8";
-  ctx.response.body = create_Capabilities(template);
+  ctx.response.body = m.as_wmts("吉林一号代理", "吉林一号代理服务");
+});
+
+router.get("/preview", async (ctx) => {
+  const html = await Deno.readTextFile("leaflet.html");
+  ctx.response.type = "text/html;charset=UTF-8";
+  ctx.response.body = html;
 });
 
 const app = new Application();
